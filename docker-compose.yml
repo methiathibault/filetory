@@ -1,12 +1,10 @@
 services:
   db:
     image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
     ports:
       - "5432:5432"
+    env_file:
+      - ./backend/.env
     volumes:
       - ./backend/database:/docker-entrypoint-initdb.d
 
