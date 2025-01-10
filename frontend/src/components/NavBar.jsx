@@ -11,6 +11,7 @@ export default function NavBar() {
             <Link to="/login">login</Link>
             <Link to="/subscribe">subscribe</Link>
             <Link to="/files">my files</Link>
+            <Link to="/users">all users</Link>
         </div>
     </div>
   )
