@@ -21,3 +21,5 @@ const user = sequelize.define('user', {
 });
 
 module.exports = user;
+
+//besoin mail pass valid token valid token role 

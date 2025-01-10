@@ -20,3 +20,19 @@ exports.createUser = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+exports.connectUser = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await User.findAll({ where: { email: email, password: password }, });
+        if (user){
+            res.status(201).json(12345);
+        }else{
+            res.status(500).json({"error": "cant connect" });
+        }
+        
+    } catch (error) {
+        console.log({ "error": error });
+        res.status(500).json({ message: error.message });
+    }
+}
