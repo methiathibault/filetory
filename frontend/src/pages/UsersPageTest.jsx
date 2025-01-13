@@ -1,10 +1,12 @@
 import {React ,useState, useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import { useUserContext } from '../context/AuthContext';
+import NotConnectedMessage from '../components/NotConnectedMessage';
 
 export default function UsersPageTest() {
     const [usersList, setUsersList] = useState([]);
-
+    const { token, tokenSetter, tokenDisconnect, verifyToken, isConnected } = useUserContext();
 
 
     const getUsers = () => {
@@ -23,17 +25,23 @@ export default function UsersPageTest() {
 
     return (
         <div>
-            <div>UsersPageTest</div>
-            <div>
-                <h1>LISTE </h1>
-                {usersList.map(result =>
-                   
-                    <div key={result.id}>
-                        name : {result.email}
-                    </div>
-                   
-                )}
-            </div>
+            
+            {verifyToken() ? 
+            <>
+                <div>UsersPageTest</div>
+                <div>
+                    <h1>LISTE </h1>
+                    {usersList.map(result =>
+                    
+                        <div key={result.id}>
+                            name : {result.email}
+                        </div>
+                    
+                    )}
+                </div>
+            </>
+            : <NotConnectedMessage/>}
+            
         </div>
       
     )

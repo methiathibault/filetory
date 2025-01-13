@@ -1,5 +1,6 @@
 import {React ,useState} from 'react'
 import axios from 'axios'
+import { useUserContext } from '../context/AuthContext';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +9,7 @@ export default function LoginPage() {
 
       const [newMail, setNewMail] = useState("");
       const [newPassword, setNewPassword] = useState("");
+      const { token, tokenSetter, tokenDisconnect, verifyToken, isConnected } = useUserContext();
 
     const go_subscribe =() => {
         navigate("/subscribe")
@@ -18,7 +20,8 @@ export default function LoginPage() {
             password: newPassword
         })
         .then(function (response) {
-            console.log(response);
+            console.log(response.data);
+            tokenSetter(response.data);
         })
         .catch(function (error) {
             console.log(error);
