@@ -9,6 +9,7 @@ export default function LoginPage() {
 
       const [newMail, setNewMail] = useState("");
       const [newPassword, setNewPassword] = useState("");
+      
       const { token, tokenSetter, tokenDisconnect, verifyToken, isConnected } = useUserContext();
 
     const go_subscribe =() => {
@@ -32,6 +33,7 @@ export default function LoginPage() {
     return (
         <div>
             <div className='font-bold text-2xl'>LoginPage</div>
+           
             <div>
                 email :
                 <input onChange={e => setNewMail(e.target.value)} className='rounded-md border-2 border-black px-2'></input>

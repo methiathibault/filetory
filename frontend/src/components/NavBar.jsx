@@ -6,12 +6,13 @@ export default function NavBar() {
     <div className='flex gap-2 justify-between'>
         <div>
             <Link to="/">Home</Link>
+            <Link to="/users">all users</Link>
         </div>
         <div className='flex gap-2 mr-4'>
             <Link to="/login">login</Link>
             <Link to="/subscribe">subscribe</Link>
             <Link to="/files">my files</Link>
-            <Link to="/users">all users</Link>
+            <Link to="/disconnect">disconnection</Link>
         </div>
     </div>
   )

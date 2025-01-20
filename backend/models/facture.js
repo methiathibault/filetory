@@ -1,7 +1,8 @@
 const sequelize = require('../database/database');
 const { DataTypes } = require('sequelize');
+const User = require("./user")
 
-const user = sequelize.define('user', {
+const facture = sequelize.define('facture', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -11,24 +12,24 @@ const user = sequelize.define('user', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    password: {
-        type: DataTypes.STRING,
+    dateBill: {
+        type: DataTypes.DATE,
         allowNull: false
     },
-     name: {
-        type: DataTypes.STRING,
+     unitPrice: {
+        type: DataTypes.FLOAT,
         allowNull: false
     }, 
-    familyName: {
-        type: DataTypes.STRING,
+    tva: {
+        type: DataTypes.FLOAT,
         allowNull: false
     }, 
-    postalAdress: {
+    quantity: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    connectionToken: {
-        type: DataTypes.STRING,
+    totalPrice: {
+        type: DataTypes.FLOAT,
         allowNull: false
     },
 }, {
@@ -36,6 +37,9 @@ const user = sequelize.define('user', {
     freezeTableName: true,
 });
 
-module.exports = user;
+facture.belongsTo(User,{foreignKey:"factureUserId",onDelete:"cascade"});
+User.hasMany(facture, {foreignKey: 'factureUserId',onDelete:"cascade"});
+
+module.exports = facture;
 
 //besoin mail pass valid token valid token role 

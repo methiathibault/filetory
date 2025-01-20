@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ironsoftware/ironpdf": "^2024.12.9",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.7",
+    "pdfmake": "^0.2.18",
     "postcss": "^8.4.49",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
