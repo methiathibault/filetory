@@ -8,7 +8,7 @@ export default function SubscribePage() {
   const [newPassword, setNewPassword] = useState("");
   const [name, setName] = useState("");
   const [familyName, setFamilyName] = useState("");
-  const [postalAdress, setPostalAdress] = useState("");
+  const [postalAdress, setPostalAdress] = useState(0);
 
   let navigate = useNavigate();
   
@@ -23,7 +23,10 @@ export default function SubscribePage() {
   const subscribe = () => {
     axios.post('http://127.0.0.1:3001/users/', {
       email: newMail,
-      password: newPassword
+      password: newPassword,
+      name:name,
+      familyName:familyName,
+      postalAdress:postalAdress
     })
     .then(function (response) {
       console.log(response);

@@ -13,6 +13,8 @@ export default function NavBar() {
             <Link to="/subscribe">subscribe</Link>
             <Link to="/files">my files</Link>
             <Link to="/disconnect">disconnection</Link>
+            <Link to="/buy">buy space</Link>
+            <Link to="/account">my account</Link>
         </div>
     </div>
   )

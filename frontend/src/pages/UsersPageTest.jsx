@@ -63,7 +63,7 @@ export default function UsersPageTest() {
     }
 
     const sendMail = () => {
-        console.log("get users");
+        
         axios.get("http://127.0.0.1:3001/users/mail",
         {
             headers:{
