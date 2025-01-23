@@ -18,7 +18,7 @@ export default function SubscribePage() {
 
   const go_strip_club =() => {
     window.location.href = "https://buy.stripe.com/test_5kA5kSdBbdwg1zieUU";
-}
+  }
 
   const subscribe = () => {
     axios.post('http://127.0.0.1:3001/users/', {
@@ -30,11 +30,12 @@ export default function SubscribePage() {
     })
     .then(function (response) {
       console.log(response);
+      console.log("calling strip")
+      go_strip_club()
     })
     .catch(function (error) {
       console.log(error);
     });
-    
   }
 
   return (

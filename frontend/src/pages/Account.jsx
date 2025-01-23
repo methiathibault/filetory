@@ -1,6 +1,7 @@
 import React, { useContext, useState, createContext, useEffect } from 'react';
 import axios from 'axios'
 import { useUserContext } from '../context/AuthContext';
+import { jwtDecode } from "jwt-decode";
 
 
 export default function Account() {
@@ -15,6 +16,9 @@ export default function Account() {
             checkToken()
             
         }
+
+        const decodedToken = jwtDecode(token);
+        console.log(decodedToken)
         
         getUser()
         getMaFactures()
@@ -22,8 +26,9 @@ export default function Account() {
     },[]);
 
     const getUser = () => {
+        const decodedToken = jwtDecode(token);
         console.log("get users", token);
-        axios.get("http://127.0.0.1:3001/users/1",
+        axios.get("http://127.0.0.1:3001/users/"+decodedToken.userId,
         {
             headers:{
                 "authorization":token
@@ -36,9 +41,10 @@ export default function Account() {
             })
     }
     const getMaFactures = () => {
-        const truc = checkToken()
+        
+        const decodedToken = jwtDecode(token);
         console.log("get factrure "+token);
-        axios.get("http://127.0.0.1:3001/factures/user/1",
+        axios.get("http://127.0.0.1:3001/factures/user/"+decodedToken.userId,
         {
             headers:{
                 "authorization":token
@@ -105,7 +111,10 @@ export default function Account() {
     
     }
 
-   
+   const deleteAccount = () => {
+    const decodedToken = jwtDecode(token);
+    console.log("delete acount "+decodedToken.userId)
+   }
 
   return (
     <>
@@ -129,6 +138,10 @@ export default function Account() {
                 <button onClick={() =>generatePdf(result.id)}> voir facture</button>
             </div>
            )}
+        </div>
+        <div>
+            <button onClick={() => deleteAccount()}>SUPPRIMER MON COMPTE</button>
+            
         </div>
     </>
     

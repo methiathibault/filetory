@@ -1,16 +1,19 @@
 import React from 'react'
 import axios from 'axios'
 import { useUserContext } from '../context/AuthContext';
+import { jwtDecode } from "jwt-decode";
 
 export default function Buy () {
   const { token, verifyToken, checkToken } = useUserContext();
 
   const newFacture = () =>{
-    console.log(token)
+    const decodedToken = jwtDecode(token);
+
+    console.log(decodedToken)
     axios.post("http://127.0.0.1:3001/factures/", 
     {
-      userId:1,
-      userEmail: "monmail@mail.com",
+      userId:decodedToken.id,
+      userEmail: decodedToken.email,
     },
     {
       headers:{
