@@ -12,8 +12,8 @@ export default function Buy () {
     console.log(decodedToken)
     axios.post("http://127.0.0.1:3001/factures/", 
     {
-      userId:decodedToken.id,
-      userEmail: decodedToken.email,
+      userId:decodedToken.userId,
+      userEmail: decodedToken.mail,
     },
     {
       headers:{
@@ -26,10 +26,10 @@ export default function Buy () {
   }
 
   return (
-    <div>
-        <h1>ACHETER DE LESPACE EN PLUS ?</h1>
-        <div>20 euro pour 20go a vie (tant que le site ne meurt pas)</div>
-        <button onClick={() => newFacture()}>payer 20 euro dollars</button>
+    <div className='flex flex-col justify-center items-center my-8 bg-stone-100 rounded-lg p-4 m-2'>
+        <h1 className='font-bold text-5xl'>ACHETER DE L'ESPACE EN PLUS ?</h1>
+        <div className='font-bold text-xl' >20 euro pour 20go a vie (tant que le site ne meurt pas)</div>
+        <button onClick={() => newFacture()} className='bg-blue-100 rounded-full p-2  hover:bg-blue-200 hover:scale-105 hover:px-4 hover:font-bold duration-150'>payer 20 euro dollars</button>
     </div>
   )
 }

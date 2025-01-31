@@ -14,7 +14,10 @@ export function UserProvider({children}){
     const checkToken = () => {
         const userToken = localStorage.getItem("token");
         console.log("my user token "+ userToken)
-        setToken(userToken);
+        if(userToken){
+            setToken(userToken);
+        }
+        
     }
 
     const tokenSetter = (new_token) =>{
@@ -22,7 +25,9 @@ export function UserProvider({children}){
         setToken(new_token);
     }
     const verifyToken = () =>{
-        
+        if(!token){
+            return false
+        }
         console.log(! !token)
         return ! !token
     }

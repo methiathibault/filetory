@@ -7,6 +7,7 @@ import axios from 'axios'
 
 export default function Disconnect() {
     let navigate = useNavigate();
+    console.log("disconnect")
     const { token, tokenSetter, tokenDisconnect, verifyToken, isConnected } = useUserContext();
     useEffect(()=>{
         tokenDisconnect();

@@ -29,7 +29,7 @@ const user = sequelize.define('user', {
     },
     connectionToken: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
 }, {
     sequelize,

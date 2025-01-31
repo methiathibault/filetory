@@ -1,9 +1,19 @@
-import React,{useEffect} from 'react'
+import React,{useEffect, useState} from 'react'
 
 export default function NotOkModal({isVisible, onClose, message}) {
 
+
+  console.log("salut")
+  console.log(isVisible)
     if(!isVisible) return null
+
+   
+
+
     useEffect(() => {
+      console.log("salut")
+
+
         const timer = setTimeout(() => {
           
           console.log('Action exécutée après 2 secondes');

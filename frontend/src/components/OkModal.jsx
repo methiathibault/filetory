@@ -1,8 +1,11 @@
 import React,{useEffect} from 'react'
 
 export default function OkModal({isVisible, onClose, message}) {
+  console.log("salut")
+  console.log(isVisible)
     if(!isVisible) return null
     useEffect(() => {
+      console.log("salut")
         const timer = setTimeout(() => {
           
           console.log('Action exécutée après 2 secondes');

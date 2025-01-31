@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const Facture = require('../models/user');
+const Facture = require('../models/facture');
 
 const launch = async () => {
     await User.sync({ force: true });

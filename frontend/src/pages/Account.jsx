@@ -2,20 +2,28 @@ import React, { useContext, useState, createContext, useEffect } from 'react';
 import axios from 'axios'
 import { useUserContext } from '../context/AuthContext';
 import { jwtDecode } from "jwt-decode";
+import NotConnectedMessage from '../components/NotConnectedMessage';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Account() {
     const [usersList, setUsersList] = useState([]);
     const [facureList, setFactureList] = useState([]);
-    const { token, verifyToken, checkToken } = useUserContext();
-
+    const { token, verifyToken, tokenDisconnect,checkToken } = useUserContext();
+    
+    let navigate = useNavigate();
 
     useEffect(()=>{
       
         if(!token){
             checkToken()
-            
         }
+        if(!token){
+           return(
+            <NotConnectedMessage/>
+           )
+        }
+
 
         const decodedToken = jwtDecode(token);
         console.log(decodedToken)
@@ -107,43 +115,61 @@ export default function Account() {
             }
         })
         
-    
-    
     }
 
    const deleteAccount = () => {
-    const decodedToken = jwtDecode(token);
-    console.log("delete acount "+decodedToken.userId)
+        const decodedToken = jwtDecode(token);
+        console.log("delete acount "+decodedToken.userId)
+        console.log("token "+token)
+
+        axios.delete("http://127.0.0.1:3001/users/"+decodedToken.userId,
+        {
+            headers:{
+                "authorization":token
+            }
+        })
+        .then(function(response) {
+            tokenDisconnect();
+            navigate("/");
+            console.log("delete acount "+decodedToken.userId)
+        })
+
+    
    }
 
   return (
     <>
-        <div>Account</div>
-        <div>
-            <h1>LISTE INFORMATIONS </h1>
+    {verifyToken() ? 
+    <div className=' rounded-lg  m-4 p-8 bg-stone-100 hover:bg-stone-200 group/menu'>
+        <div className='flex justify-center items-center font-bold text-4xl group-hover/menu:underline '>Account</div>
+        <div className='flex flex-col items-center m-4'>
+            <h1 className='font-bold text-xl'>LISTE INFORMATIONS </h1>
             {usersList.map(result =>
-                <div key={result.id}>
-                     <div> email : {result.email}</div>
-                     <div>postal code : {result.postalAdress}</div>
-                     <div>name : {result.name}</div>
-                     <div>family name : {result.familyName}</div>
+                <div key={result.id} className='border-2 m-2 p-2 rounded-lg bg-zinc-100 hover:scale-105 hover:bg-zinc-300 duration-150 hover:px-8'>
+                     <div className='flex  gap-2 items-center justify-between'> <div>email : </div>  <input type="text" defaultValue={result.email} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
+                     <div className='flex  gap-2 items-center justify-between'> <div>postal code :</div> <input type="text" defaultValue={result.postalAdress} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
+                     <div className='flex  gap-2 items-center justify-between'><div>name :</div> <input type="text" defaultValue={result.name} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
+                     <div className='flex  gap-2 items-center justify-between'><div>family name :</div> <input type="text" defaultValue={result.familyName} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
                 </div>
             )}
         </div>
-        <div>
-            <h1>LISTE ACHAT </h1>
-           {facureList.map(result =>
-            <div>
-                <div>{result.email} </div>
-                <button onClick={() =>generatePdf(result.id)}> voir facture</button>
+        <div className='flex flex-col items-center m-4'>
+            <h1 className='font-bold text-xl'>LISTE ACHAT </h1>
+            <div className='flex flex-col border-2 rounded-lg bg-zinc-300 hover:px-6 duration-300'>
+                {facureList.map(result =>
+                    <div className='border-2 m-2 p-2 rounded-lg bg-zinc-100 hover:scale-105 hover:bg-white duration-150 flex gap-2 items-center group'>
+                        <div className='group-hover:underline'>{  new Date(result.dateBill).toISOString().split("T")[0]}</div>
+                        <button onClick={() =>generatePdf(result.id)} className=' no-underline border-2 bg-blue-100 hover:bg-blue-200 p-2 hover:scale-105 duration-150 rounded-full'> voir facture</button>
+                    </div>
+                )}
             </div>
-           )}
         </div>
-        <div>
-            <button onClick={() => deleteAccount()}>SUPPRIMER MON COMPTE</button>
-            
+
+        <div className='flex flex-col items-center m-4'>
+            <button onClick={() => deleteAccount()} className='p-4 bg-red-500 rounded-full hover:bg-red-600 hover:scale-105 duration-150 hover:underline hover:font-bold'>SUPPRIMER MON COMPTE</button>
         </div>
+    </div >
+     : <NotConnectedMessage/>}
     </>
-    
   )
 }
