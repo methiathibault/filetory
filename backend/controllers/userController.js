@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer");
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const Facture = require('../models/facture');
+const INITIAL_STORAGE = 21474836480;
 require('dotenv').config({path: path.resolve(__dirname, '../.env')});
 
 exports.getUsers = async (req, res) => {
@@ -34,11 +35,27 @@ exports.getUser = async (req, res) => {
 
 exports.createUser = async (req, res) => {
     console.log(req.body)
-    const { email, password,name,familyName, postalAdress } = req.body;
+    const { email, password, name, familyName, postalAdress } = req.body;
     try {
-        const user = await User.create({ email, password,name,familyName, postalAdress  });
+        const user = await User.create({ 
+            email, 
+            password,
+            name,
+            familyName, 
+            postalAdress,
+            usedStorage: 0,
+            totalStorage: INITIAL_STORAGE
+        });
         console.log(user)
-        const _ = await Facture.create({ "factureUserId":user.dataValues.id, "email":user.dataValues.email,"dateBill":new Date(),"unitPrice":20.0, "tva":5.0, "quantity":1, "totalPrice":20.0  });
+        const _ = await Facture.create({ 
+            "factureUserId": user.dataValues.id, 
+            "email": user.dataValues.email,
+            "dateBill": new Date(),
+            "unitPrice": 20.0, 
+            "tva": 5.0, 
+            "quantity": 1, 
+            "totalPrice": 20.0  
+        });
         try{
             sendConfimationMail(user.dataValues.email)
         }catch(error){

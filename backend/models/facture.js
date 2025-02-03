@@ -16,7 +16,7 @@ const facture = sequelize.define('facture', {
         type: DataTypes.DATE,
         allowNull: false
     },
-     unitPrice: {
+    unitPrice: {
         type: DataTypes.FLOAT,
         allowNull: false
     }, 
@@ -31,15 +31,13 @@ const facture = sequelize.define('facture', {
     totalPrice: {
         type: DataTypes.FLOAT,
         allowNull: false
-    },
+    }
 }, {
     sequelize,
     freezeTableName: true,
 });
 
-facture.belongsTo(User,{foreignKey:"factureUserId",onDelete:"cascade"});
-User.hasMany(facture, {foreignKey: 'factureUserId',onDelete:"cascade"});
+facture.belongsTo(User, { foreignKey: "factureUserId", onDelete: "cascade" });
+User.hasMany(facture, { foreignKey: 'factureUserId', onDelete: "cascade" });
 
 module.exports = facture;
-
-//besoin mail pass valid token valid token role 

@@ -170,7 +170,10 @@ exports.downloadFile = async (req, res) => {
 
 exports.deleteFile = async (req, res) => {
     try {
-        const decoded = decodeToken(req.headers.authorization);
+        const token = req.headers.authorization;
+        const tokenString = token.startsWith('Bearer ') ? token.slice(7) : token;
+        const decoded = jwt.verify(tokenString, process.env.JWT_TOKEN);
+
         const user = await User.findByPk(decoded.userId);
         const file = await File.findOne({
             where: {
@@ -188,10 +191,13 @@ exports.deleteFile = async (req, res) => {
             fs.unlinkSync(filePath);
         }
 
-        user.usedStorage -= file.size;
-        await user.save();
+        if (user) {
+            user.usedStorage = Math.max(0, user.usedStorage - file.size);
+            await user.save();
+        }
 
         await file.destroy();
+        
         res.status(200).json({ message: 'File deleted successfully' });
     } catch (error) {
         console.error('Error deleting file:', error);

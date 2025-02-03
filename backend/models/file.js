@@ -21,7 +21,7 @@ const file = sequelize.define('file', {
         allowNull: false
     },
     size: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false
     },
     uploadDate: {

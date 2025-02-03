@@ -8,5 +8,6 @@ router.post('/upload', middleware.authenticate, fileController.uploadFiles);
 router.get('/', middleware.authenticate, fileController.getFiles);
 router.get('/:id/download', middleware.authenticate, fileController.downloadFile);
 router.delete('/:id', middleware.authenticate, fileController.deleteFile);
+router.get('/storage', middleware.authenticate, fileController.getStorageInfo);
 
 module.exports = router;

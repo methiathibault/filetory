@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Trash2, Download, Search } from 'lucide-react';
 import axios from 'axios';
 import { useUserContext } from '../context/AuthContext';
 
-const FileList = () => {
+const FileList = ({ refreshTrigger, onUpdateFiles }) => {
   const [files, setFiles] = useState([]);
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('date');
@@ -12,7 +12,7 @@ const FileList = () => {
 
   useEffect(() => {
     fetchFiles();
-  }, []);
+  }, [refreshTrigger]);
 
   const fetchFiles = async () => {
     try {
@@ -35,6 +35,9 @@ const FileList = () => {
         }
       });
       fetchFiles();
+      if (onUpdateFiles) {
+        onUpdateFiles();
+      }
     } catch (error) {
       console.error('Error deleting file:', error);
     }
@@ -107,33 +110,39 @@ const FileList = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow">
-        {filteredFiles.map((file) => (
-          <div
-            key={file.id}
-            className="flex items-center justify-between p-4 border-b last:border-b-0"
-          >
-            <div className="flex-1">
-              <h3 className="font-medium">{file.name}</h3>
-              <p className="text-sm text-gray-500">
-                {new Date(file.uploadDate).toLocaleDateString()} - {(file.size / 1024 / 1024).toFixed(2)} MB
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => handleDownload(file.id, file.name)}
-                className="p-2 hover:bg-gray-100 rounded-full"
-              >
-                <Download size={20} />
-              </button>
-              <button
-                onClick={() => handleDelete(file.id)}
-                className="p-2 hover:bg-red-100 rounded-full text-red-600"
-              >
-                <Trash2 size={20} />
-              </button>
-            </div>
+        {filteredFiles.length === 0 ? (
+          <div className="p-4 text-center text-gray-500">
+            Aucun fichier trouvé
           </div>
-        ))}
+        ) : (
+          filteredFiles.map((file) => (
+            <div
+              key={file.id}
+              className="flex items-center justify-between p-4 border-b last:border-b-0"
+            >
+              <div className="flex-1">
+                <h3 className="font-medium">{file.name}</h3>
+                <p className="text-sm text-gray-500">
+                  {new Date(file.uploadDate).toLocaleDateString()} - {(file.size / 1024 / 1024).toFixed(2)} MB
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleDownload(file.id, file.name)}
+                  className="p-2 hover:bg-gray-100 rounded-full"
+                >
+                  <Download size={20} />
+                </button>
+                <button
+                  onClick={() => handleDelete(file.id)}
+                  className="p-2 hover:bg-red-100 rounded-full text-red-600"
+                >
+                  <Trash2 size={20} />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

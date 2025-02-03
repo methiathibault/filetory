@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Upload } from 'lucide-react';
 import axios from 'axios';
 import { useUserContext } from '../context/AuthContext';
 
-const FileUpload = () => {
+const FileUpload = ({ onUploadSuccess }) => {
   const [dragActive, setDragActive] = useState(false);
   const { token } = useUserContext();
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -52,8 +52,10 @@ const FileUpload = () => {
         },
       });
       setUploadProgress(0);
+      onUploadSuccess();
     } catch (error) {
       console.error('Error uploading files:', error);
+      setUploadProgress(0);
     }
   };
 
