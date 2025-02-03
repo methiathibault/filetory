@@ -259,3 +259,27 @@ exports.checkAdmin = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+exports.modifUser = async (req, res) => {
+    const { email, name, familyName, postalAdress, id } = req.body;
+    
+    try {
+        const user = await User.findAll({ where: { email: email }, });
+        if (user){
+            try {
+               
+                await User.update({email:email,familyName:familyName,name:name,postalAdress:postalAdress},{where:{id:id}})
+                   
+              } catch (err) {
+                // internal failure
+                res.status(500).json({"error": "cant connect" });
+              }
+        }else{
+            res.status(500).json({"error": "cant connect" });
+        }
+        
+    } catch (error) {
+        console.log({ "error": error });
+        res.status(500).json({ message: error.message });
+    }
+}

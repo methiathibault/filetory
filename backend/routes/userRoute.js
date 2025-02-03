@@ -11,5 +11,6 @@ router.post('/', userController.createUser);
 router.delete('/:id', middleware.authenticate, userController.deleteUser);
 router.post('/connection', userController.connectUser);
 router.get('/admin/:id', middleware.authenticate, userController.checkAdmin)
+router.put("/",middleware.authenticate, userController.modifUser)
 
 module.exports = router;
