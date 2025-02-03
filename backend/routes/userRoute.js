@@ -10,5 +10,6 @@ router.get('/mail', userController.sendmail);
 router.post('/', userController.createUser);
 router.delete('/:id', middleware.authenticate, userController.deleteUser);
 router.post('/connection', userController.connectUser);
+router.get('/admin/:id', middleware.authenticate, userController.checkAdmin)
 
 module.exports = router;

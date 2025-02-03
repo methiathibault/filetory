@@ -236,3 +236,26 @@ exports.sendmail = async (req, res) => {
     });
     res.status(201).json({"is":"ok"});
 }
+
+exports.checkAdmin = async (req, res) => {
+    let id = req.params.id
+    try {
+        const users = await User.findAll({
+            where:{
+                id:id
+            }
+        });
+
+        console.log(users[0].dataValues.roles)
+        if(users[0].dataValues.roles == "admin"){
+            res.status(200).json({"admin":true});
+        }else{
+            res.status(200).json({"admin":false});
+        }
+        
+       
+    } catch (error) {
+        console.log({ "error": error });
+        res.status(500).json({ message: error.message });
+    }
+}
