@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Trash2, Download, Search, SlidersHorizontal } from 'lucide-react';
+import { Trash2, Download, Search } from 'lucide-react';
 import axios from 'axios';
 import { useUserContext } from '../context/AuthContext';
 

@@ -17,7 +17,7 @@ const decodeToken = (token) => {
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const uploadDir = '/app/uploads/';  // Chemin dans le conteneur Docker
+        const uploadDir = '/app/uploads/';
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
         }
@@ -28,7 +28,6 @@ const storage = multer.diskStorage({
     }
 });
 
-// Filtre pour vérifier l'espace de stockage disponible
 const fileFilter = async (req, file, cb) => {
     try {
         const decoded = decodeToken(req.headers.authorization);
