@@ -31,6 +31,10 @@ const user = sequelize.define('user', {
     connectionToken: {
         type: DataTypes.STRING,
         allowNull: true
+    }, roles: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "user"
     },
     usedStorage: {
         type: DataTypes.BIGINT,

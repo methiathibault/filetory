@@ -79,7 +79,7 @@ export default function Buy() {
                   className={`h-2.5 rounded-full transition-all duration-300 ${
                     (storageInfo.usedStorage / storageInfo.totalStorage) > 0.9 
                       ? 'bg-red-600' 
-                      : (storageInfo.usedStorage / storageInfo.totalStorage) > 0.7
+                      : (storageInfo.usedStorage / storageInfo.totalStorage) > 0.7true
                       ? 'bg-yellow-400'
                       : 'bg-blue-600'
                   }`}

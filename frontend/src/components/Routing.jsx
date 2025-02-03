@@ -9,6 +9,7 @@ import UsersPageTest from '../pages/UsersPageTest'
 import Disconnect from './Disconnect'
 import Account from '../pages/Account'
 import Buy from '../pages/Buy'
+import AdminPage from '../pages/AdminPage'
 
 export default function Routing() {
   return (
@@ -21,6 +22,7 @@ export default function Routing() {
         <Route path="/disconnect" element={<Disconnect/>}></Route>
         <Route path="/buy" element={<Buy/>}></Route>
         <Route path="/account" element={<Account/>}></Route>
+        <Route path="/admin" element={<AdminPage/>}></Route>
         <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

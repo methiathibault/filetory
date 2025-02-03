@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function Account() {
-    const [usersList, setUsersList] = useState([]);
+    const [usersList, setUsersList] = useState({});
     const [facureList, setFactureList] = useState([]);
     const { token, verifyToken, tokenDisconnect,checkToken } = useUserContext();
     
@@ -45,7 +45,7 @@ export default function Account() {
         .then(function(response)
             {
                 console.log(response.data)
-                setUsersList(response.data)
+                setUsersList(response.data[0])
             })
     }
     const getMaFactures = () => {
@@ -133,8 +133,27 @@ export default function Account() {
             navigate("/");
             console.log("delete acount "+decodedToken.userId)
         })
+   }
 
-    
+   const changeUserInfo = (event) =>{
+
+    if (event.key === "Enter") {
+        console.log(usersList)
+
+        axios.put("http://127.0.0.1:3001/users/",
+            usersList,
+            {
+                headers:{
+                    "authorization":token
+                }
+            }
+        )
+            .then(function(response) {
+               
+                console.log("info "+response)
+            })
+        }
+
    }
 
   return (
@@ -144,14 +163,14 @@ export default function Account() {
         <div className='flex justify-center items-center font-bold text-4xl group-hover/menu:underline '>Account</div>
         <div className='flex flex-col items-center m-4'>
             <h1 className='font-bold text-xl'>LISTE INFORMATIONS </h1>
-            {usersList.map(result =>
-                <div key={result.id} className='border-2 m-2 p-2 rounded-lg bg-zinc-100 hover:scale-105 hover:bg-zinc-300 duration-150 hover:px-8'>
-                     <div className='flex  gap-2 items-center justify-between'> <div>email : </div>  <input type="text" defaultValue={result.email} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
-                     <div className='flex  gap-2 items-center justify-between'> <div>postal code :</div> <input type="text" defaultValue={result.postalAdress} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
-                     <div className='flex  gap-2 items-center justify-between'><div>name :</div> <input type="text" defaultValue={result.name} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
-                     <div className='flex  gap-2 items-center justify-between'><div>family name :</div> <input type="text" defaultValue={result.familyName} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
+            
+                <div key={usersList.id} className='border-2 m-2 p-2 rounded-lg bg-zinc-100 hover:scale-105 hover:bg-zinc-300 duration-150 hover:px-8'>
+                     <div className='flex  gap-2 items-center justify-between'> <div>email : </div>  <input type="text" onChange={(e) => setUsersList({...usersList,email:e.target.value})} onKeyDown={changeUserInfo} defaultValue={usersList.email} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
+                     <div className='flex  gap-2 items-center justify-between'> <div>postal code :</div> <input type="text" onChange={(e) => setUsersList({...usersList,postalAdress:e.target.value})} onKeyDown={changeUserInfo} defaultValue={usersList.postalAdress} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
+                     <div className='flex  gap-2 items-center justify-between'><div>name :</div> <input type="text" onChange={(e) => setUsersList({...usersList,name:e.target.value})} onKeyDown={changeUserInfo} defaultValue={usersList.name} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
+                     <div className='flex  gap-2 items-center justify-between'><div>family name :</div> <input type="text" onChange={(e) => setUsersList({...usersList,familyName:e.target.value})} onKeyDown={changeUserInfo} defaultValue={usersList.familyName} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
                 </div>
-            )}
+            
         </div>
         <div className='flex flex-col items-center m-4'>
             <h1 className='font-bold text-xl'>LISTE ACHAT </h1>
