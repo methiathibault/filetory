@@ -4,6 +4,7 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const Facture = require('../models/facture');
 const argon2 = require('argon2');
+const INITIAL_STORAGE = 21474836480;
 require('dotenv').config({path: path.resolve(__dirname, '../.env')});
 
 
@@ -35,33 +36,37 @@ exports.getUser = async (req, res) => {
 }
 
 exports.createUser = async (req, res) => {
-   
-    const { email, password,name,familyName, postalAdress } = req.body;
+    console.log(req.body)
+    const { email, password, name, familyName, postalAdress } = req.body;
     try {
-        try {
-            console.log(password)
-            const hash = await argon2.hash(password);
-            console.log(hash)
-            userRoles= "user"
-            if(email == "filetory4@gmail.com"){
-                userRoles= "admin"
-            }
-            console.log(hash)
-            console.log(userRoles)
-            const user = await User.create({ email, password:hash,name,familyName, postalAdress ,roles:userRoles });
-
-            console.log(user)
-            const _ = await Facture.create({ "factureUserId":user.dataValues.id, "email":user.dataValues.email,"dateBill":new Date(),"unitPrice":20.0, "tva":5.0, "quantity":1, "totalPrice":20.0  });
-            try{
-                sendMail(user.dataValues.email,"bienvenue chez filetory!","<b>bienvenue chez filetory! </b> votre compte a bien été creer tu désormais utiliser beaucoup d'espace")
-            }catch(error){
-                res.status(500).json({"error":"error mail sending"})
-            }
-            
-            res.status(201).json(user);
-          } catch (err) {
-            res.status(500).json({"error":"error with password "+err})
-          }
+        const hash = await argon2.hash(password);
+        const user = await User.create({ 
+            email, 
+            hash,
+            name,
+            familyName, 
+            postalAdress,
+            usedStorage: 0,
+            totalStorage: INITIAL_STORAGE
+        });
+        console.log(user)
+        const _ = await Facture.create({ 
+            "factureUserId": user.dataValues.id, 
+            "email": user.dataValues.email,
+            "dateBill": new Date(),
+            "unitPrice": 20.0, 
+            "tva": 5.0, 
+            "quantity": 1, 
+            "totalPrice": 20.0  
+        });
+        try{
+            sendMail(
+              user.dataValues.email,
+              "bienvenue chez filetory!","<b>bienvenue chez filetory! </b> votre compte a bien été creer tu désormais utiliser beaucoup d'espace"
+            )
+        }catch(error){
+            res.status(500).json({"error":"error mail sending"})
+        }
         
     } catch (error) {
         console.log({ "error": error });

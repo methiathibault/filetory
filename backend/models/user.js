@@ -9,13 +9,14 @@ const user = sequelize.define('user', {
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     password: {
         type: DataTypes.STRING,
         allowNull: false
     },
-     name: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false
     }, 
@@ -35,11 +36,19 @@ const user = sequelize.define('user', {
         allowNull: false,
         defaultValue: "user"
     },
+    usedStorage: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+        defaultValue: 0
+    },
+    totalStorage: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+        defaultValue: 21474836480
+    }
 }, {
     sequelize,
     freezeTableName: true,
 });
 
 module.exports = user;
-
-//besoin mail pass valid token valid token role 
