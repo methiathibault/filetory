@@ -6,15 +6,6 @@ const multer = require('multer');
 const jwt = require('jsonwebtoken');
 require('dotenv').config({path: path.resolve(__dirname, '../.env')});
 
-const decodeToken = (token) => {
-    try {
-        const tokenString = token.startsWith('Bearer ') ? token.slice(7) : token;
-        return jwt.verify(tokenString, process.env.JWT_TOKEN);
-    } catch (error) {
-        throw new Error('Invalid token');
-    }
-};
-
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         const uploadDir = '/app/uploads/';
@@ -30,7 +21,9 @@ const storage = multer.diskStorage({
 
 const fileFilter = async (req, file, cb) => {
     try {
-        const decoded = decodeToken(req.headers.authorization);
+        const token = req.headers.authorization;
+        const tokenString = token.startsWith('Bearer ') ? token.slice(7) : token;
+        const decoded = jwt.verify(tokenString, process.env.JWT_TOKEN);
         const user = await User.findByPk(decoded.userId);
         
         if (!user) {
@@ -39,9 +32,9 @@ const fileFilter = async (req, file, cb) => {
         }
 
         const existingFiles = req.files || [];
-        const totalUploadSize = existingFiles.reduce((acc, f) => acc + f.size, 0) + file.size;
-        
-        if (user.usedStorage + totalUploadSize > user.totalStorage) {
+        const totalUploadSize = existingFiles.reduce((acc, f) => parseInt(acc) + parseInt(f.size), 0) + parseInt(file.size);
+
+        if (parseInt(user.usedStorage) + parseInt(totalUploadSize) > parseInt(user.totalStorage)) {
             cb(new Error('Storage limit would be exceeded'));
             return;
         }
@@ -59,7 +52,9 @@ const upload = multer({
 
 exports.uploadFiles = [upload.array('files'), async (req, res) => {
     try {
-        const decoded = decodeToken(req.headers.authorization);
+        const token = req.headers.authorization;
+        const tokenString = token.startsWith('Bearer ') ? token.slice(7) : token;
+        const decoded = jwt.verify(tokenString, process.env.JWT_TOKEN);
         const userId = decoded.userId;
         const user = await User.findByPk(userId);
 
@@ -67,8 +62,10 @@ exports.uploadFiles = [upload.array('files'), async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const totalUploadSize = req.files.reduce((acc, file) => acc + file.size, 0);
-        if (user.usedStorage + totalUploadSize > user.totalStorage) {
+        const totalUploadSize = req.files.reduce((acc, file) => parseInt(acc) + parseInt(file.size), 0);
+
+        const newTotalUsed = parseInt(user.usedStorage) + parseInt(totalUploadSize);
+        if (newTotalUsed > parseInt(user.totalStorage)) {
             req.files.forEach(file => fs.unlinkSync(file.path));
             return res.status(400).json({ message: 'Storage limit would be exceeded' });
         }
@@ -87,13 +84,13 @@ exports.uploadFiles = [upload.array('files'), async (req, res) => {
                 name: file.originalname,
                 path: file.path,
                 type: type,
-                size: file.size,
+                size: parseInt(file.size),
                 userId: userId
             });
             savedFiles.push(savedFile);
         }
 
-        user.usedStorage += totalUploadSize;
+        user.usedStorage = newTotalUsed;
         await user.save();
 
         res.status(201).json(savedFiles);
@@ -108,7 +105,9 @@ exports.uploadFiles = [upload.array('files'), async (req, res) => {
 
 exports.getFiles = async (req, res) => {
     try {
-        const decoded = decodeToken(req.headers.authorization);
+        const token = req.headers.authorization;
+        const tokenString = token.startsWith('Bearer ') ? token.slice(7) : token;
+        const decoded = jwt.verify(tokenString, process.env.JWT_TOKEN);
         const files = await File.findAll({
             where: {
                 userId: decoded.userId
@@ -124,17 +123,22 @@ exports.getFiles = async (req, res) => {
 
 exports.getStorageInfo = async (req, res) => {
     try {
-        const decoded = decodeToken(req.headers.authorization);
+        const token = req.headers.authorization;
+        const tokenString = token.startsWith('Bearer ') ? token.slice(7) : token;
+        const decoded = jwt.verify(tokenString, process.env.JWT_TOKEN);
         const user = await User.findByPk(decoded.userId);
         
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        const usedStorage = parseInt(user.usedStorage) || 0;
+        const totalStorage = parseInt(user.totalStorage) || 0;
+
         res.status(200).json({
-            usedStorage: user.usedStorage,
-            totalStorage: user.totalStorage,
-            availableStorage: user.totalStorage - user.usedStorage
+            usedStorage: usedStorage,
+            totalStorage: totalStorage,
+            availableStorage: totalStorage - usedStorage
         });
     } catch (error) {
         console.error('Error fetching storage info:', error);
@@ -144,7 +148,10 @@ exports.getStorageInfo = async (req, res) => {
 
 exports.downloadFile = async (req, res) => {
     try {
-        const decoded = decodeToken(req.headers.authorization);
+        const token = req.headers.authorization;
+        const tokenString = token.startsWith('Bearer ') ? token.slice(7) : token;
+        const decoded = jwt.verify(tokenString, process.env.JWT_TOKEN);
+        
         const file = await File.findOne({
             where: {
                 id: req.params.id,
@@ -173,7 +180,7 @@ exports.deleteFile = async (req, res) => {
         const token = req.headers.authorization;
         const tokenString = token.startsWith('Bearer ') ? token.slice(7) : token;
         const decoded = jwt.verify(tokenString, process.env.JWT_TOKEN);
-
+        
         const user = await User.findByPk(decoded.userId);
         const file = await File.findOne({
             where: {
@@ -192,7 +199,9 @@ exports.deleteFile = async (req, res) => {
         }
 
         if (user) {
-            user.usedStorage = Math.max(0, user.usedStorage - file.size);
+            const currentStorage = parseInt(user.usedStorage) || 0;
+            const fileSize = parseInt(file.size) || 0;
+            user.usedStorage = Math.max(0, currentStorage - fileSize);
             await user.save();
         }
 
