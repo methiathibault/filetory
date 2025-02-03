@@ -30,23 +30,23 @@ export default function NavBar() {
   return (
     <div className='flex gap-2 justify-between rounded-full border-2 m-4 p-2 bg-zinc-100'>
         <div className='flex gap-2 mr-4 items-center '>
-        <div className='hover:p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '>  <Link to="/">Home</Link> </div>
-          <div className='hover:p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '><Link to="/users">All users</Link></div>
+        <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150  '>  <Link to="/">Home</Link> </div>
+          <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '><Link to="/users">All users</Link></div>
            
             
         </div>
         <div className='flex gap-2 mr-4 items-center'>
-          <div className='hover:p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '> <Link to="/login">Login</Link></div>
-          <div className='hover:p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '><Link to="/subscribe">Subscribe</Link></div>
+          <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '> <Link to="/login">Login</Link></div>
+          <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '><Link to="/subscribe">Subscribe</Link></div>
            
             
             
             {verifyToken() ?
             <>
-              <div className='hover:p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '><Link to="/files">My Files</Link> </div>
-              <div className='hover:p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '> <Link to="/disconnect">Disconnect</Link> </div>
-              <div className='hover:p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '><Link to="/buy">Buy More Space</Link></div>
-              <div className='hover:p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '><Link to="/account">Account</Link></div>
+              <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '><Link to="/files">My Files</Link> </div>
+              <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '> <Link to="/disconnect">Disconnect</Link> </div>
+              <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '><Link to="/buy">Buy More Space</Link></div>
+              <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '><Link to="/account">Account</Link></div>
              
              
               
@@ -54,7 +54,7 @@ export default function NavBar() {
 
               {isAdmin ?
                 <>
-                 <div className='hover:p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '>
+                 <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '>
                   <Link to="/admin">admin overview</Link>
                  </div>
                   

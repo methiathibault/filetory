@@ -20,6 +20,7 @@ export default function LoginPage() {
     const go_subscribe =() => {
         navigate("/subscribe")
     }
+
     const go_login = () => {
         console.log("go login")
         axios.post('http://127.0.0.1:3001/users/connection', {
@@ -27,14 +28,12 @@ export default function LoginPage() {
             password: newPassword
         })
         .then(function (response) {
-            console.log("resultat de la connecion"+response.status);
             tokenSetter(response.data);
 
             setModalMessage("well connected")
             setOkModal(true)
         })
         .catch(function (error) {
-            console.log(error);
             setModalMessage("error while connecting")
             setNotOkModal(true)
         });
@@ -53,15 +52,13 @@ export default function LoginPage() {
                 </div>
                 <div className='group/pass'>
                     <div className='group-hover/pass:underline group-hover/pass:font-bold duration-300'>Password :</div>
-                    <input onChange={e => setNewPassword(e.target.value)} className='rounded-md border-2 border-black px-2 hover:scale-105 focus:scale-110 duration-150'></input>
+                    <input type='password' onChange={e => setNewPassword(e.target.value)} className='rounded-md border-2 border-black px-2 hover:scale-105 focus:scale-110 duration-150'></input>
                 </div>
                 <div className='flex  justify-around my-4'>
                     <button onClick={() => {go_login()}} className='rounded-full border-2 border-black px-4 bg-blue-100 hover:bg-blue-300 hover:scale-105 duration-150'>Login</button>
                     <button onClick={go_subscribe} className='rounded-full border-2 border-black px-4 bg-cyan-100 hover:bg-cyan-300 hover:scale-105 duration-150'>Subscribe</button>
                 </div>
            </div>
-           {console.log("mon modal "+okModal)}
-           {console.log("mon autre modal "+notOkModal)}
             
         </div>
         <OkModal isVisible={okModal} onClose={() => {setOkModal(false)}} message={modalMessage} />

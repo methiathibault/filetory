@@ -3,8 +3,6 @@ import React,{useEffect, useState} from 'react'
 export default function NotOkModal({isVisible, onClose, message}) {
 
 
-  console.log("salut")
-  console.log(isVisible)
     if(!isVisible) return null
 
    
