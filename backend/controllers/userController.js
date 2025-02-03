@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const crypto = require('crypto');
 const nodemailer = require("nodemailer");
 const path = require('path');
 const jwt = require('jsonwebtoken');
@@ -42,7 +43,7 @@ exports.createUser = async (req, res) => {
         const hash = await argon2.hash(password);
         const user = await User.create({ 
             email, 
-            hash,
+            password: hash,
             name,
             familyName, 
             postalAdress,
@@ -76,7 +77,6 @@ exports.createUser = async (req, res) => {
 
 exports.connectUser = async (req, res) => {
     const { email, password } = req.body;
-    
     try {
         const user = await User.findAll({ where: { email: email }, });
         if (user){
@@ -84,9 +84,11 @@ exports.connectUser = async (req, res) => {
                 console.log(user[0].password + " "+ password)
                 if (await argon2.verify(user[0].password, password)) {
                     // password match
+                    console.log("dans if")
                     const token = process.env.JWT_TOKEN
+                    console.log("token " + token)
                     const tokenToken = crypto.randomUUID()
-                    console.log(tokenToken)
+                    console.log("tokenToken" + tokenToken)
                     await User.update({connectionToken:tokenToken},{where:{email:email}})
                     const payload = {
                         userId: user[0].dataValues.id,
@@ -167,7 +169,7 @@ const sendMail = async (email, title, message) => {
           html: title//"<b>bienvenue chez filetory! </b> votre compte a bien été creer tu désormais utiliser beaucoup d'espace"
         });
     }catch(error){
-        console.log("error while sending mail")
+        console.log(error)
     }
     
 
@@ -213,33 +215,6 @@ const sendAdminMail = async ( title, message) => {
     }
    
     
-}
-
-
-
-
-exports.sendmail = async (req, res) => {
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.office365.com',
-        port: 587,
-        secure: false, // Utilise TLS
-        auth: {
-          user: process.env.MAIL_USERNAME, // Remplacez par votre email Outlook
-          pass: process.env.MAIL_PASSWORD // Remplacez par votre mot de passe ou un mot de passe d'application
-        },
-        tls: {
-          ciphers: 'SSLv3'
-        }
-      });
-
-    let info = await transporter.sendMail({
-      from: '"Me" <d.costes@ecole-ipssi.net>',
-      to: "costes.duncan@gmail.com",
-      subject: "bonjour!",
-      text: "hallo?",
-      html: "<b>Hello le world? </b> ceci est un putain de test"
-    });
-    res.status(201).json({"is":"ok"});
 }
 
 exports.checkAdmin = async (req, res) => {
