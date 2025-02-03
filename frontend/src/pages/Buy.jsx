@@ -41,7 +41,9 @@ export default function Buy() {
             "authorization": token
           }
         }
-      );
+      ).then(function() {
+        window.open("https://buy.stripe.com/test_5kA5kSdBbdwg1zieUU", '_blank');
+      });
       
       await fetchStorageInfo();
       setIsLoading(false);
