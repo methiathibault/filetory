@@ -17,7 +17,7 @@ export default function SubscribePage() {
   }
 
   const go_strip_club =() => {
-    window.location.href = "https://buy.stripe.com/test_5kA5kSdBbdwg1zieUU";
+    window.open("https://buy.stripe.com/test_5kA5kSdBbdwg1zieUU", '_blank');
   }
 
   const subscribe = () => {

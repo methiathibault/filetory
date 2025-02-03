@@ -2,6 +2,7 @@ import React, { useContext, useState, createContext, useEffect } from 'react';
 import { useNavigate } from "react-router-dom"
 export const userContext = createContext();
 
+
 export function UserProvider({children}){
     const [token, setToken] =  useState(() => localStorage.getItem("token"));
 
@@ -17,13 +18,15 @@ export function UserProvider({children}){
         if(userToken){
             setToken(userToken);
         }
-        
     }
+
+
 
     const tokenSetter = (new_token) =>{
         localStorage.setItem("token", new_token);
         setToken(new_token);
     }
+
     const verifyToken = () =>{
         if(!token){
             return false

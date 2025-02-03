@@ -22,6 +22,7 @@ export default function Buy () {
     })
     .then(function(response){
       console.log(response)
+      window.open("https://buy.stripe.com/test_5kA5kSdBbdwg1zieUU", '_blank');
     })
   }
 
