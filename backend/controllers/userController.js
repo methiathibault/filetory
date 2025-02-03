@@ -60,15 +60,19 @@ exports.createUser = async (req, res) => {
             "quantity": 1, 
             "totalPrice": 20.0  
         });
-        try{
-            sendMail(
-              user.dataValues.email,
-              "bienvenue chez filetory!","<b>bienvenue chez filetory! </b> votre compte a bien été creer tu désormais utiliser beaucoup d'espace"
-            )
-        }catch(error){
+        try {
+            console.log("Email de l'utilisateur:", user.dataValues.email);
+            await sendMail(
+                user.dataValues.email,
+                "Bienvenue chez Filetory !",
+                "Votre compte a bien été créé. Vous pouvez désormais utiliser notre service de stockage."
+            );
+        } catch(error){
             res.status(500).json({"error":"error mail sending"})
         }
-        
+
+        res.status(201).json(user);
+
     } catch (error) {
         console.log({ "error": error });
         res.status(500).json({ message: error.message });
@@ -147,34 +151,36 @@ exports.deleteUser = async (req, res) => {
 }
 
 const sendMail = async (email, title, message) => {
-    try{
+    if (!email) {
+        throw new Error('Email recipient is required');
+    }
+    
+    try {
         const transporter = nodemailer.createTransport({
             host: 'smtp.office365.com',
             port: 587,
-            secure: false, // Utilise TLS
+            secure: false,
             auth: {
-              user: process.env.MAIL_USERNAME, // Remplacez par votre email Outlook
-              pass: process.env.MAIL_PASSWORD // Remplacez par votre mot de passe ou un mot de passe d'application
+                user: process.env.MAIL_USERNAME,
+                pass: process.env.MAIL_PASSWORD
             },
             tls: {
-              ciphers: 'SSLv3'
+                ciphers: 'SSLv3'
             }
-          });
-    
-        let info = await transporter.sendMail({
-          from: '"Me" '+process.env.MAIL_USERNAME,
-          to: email,
-          subject: message,//"bienvenue chez filetory!",
-          text: title,//"votre compte a bien été creer",
-          html: title//"<b>bienvenue chez filetory! </b> votre compte a bien été creer tu désormais utiliser beaucoup d'espace"
         });
-    }catch(error){
-        console.log(error)
-    }
     
-
-   
-}
+        await transporter.sendMail({
+            from: `"Filetory" <${process.env.MAIL_USERNAME}>`,
+            to: email,
+            subject: title || 'Sans titre',
+            text: message || '',
+            html: `<div>${message || ''}</div>`
+        });
+    } catch(error) {
+        console.error("Erreur d'envoi de mail:", error);
+        throw error;
+    }
+};
 
 const sendAdminMail = async ( title, message) => {
     try{
