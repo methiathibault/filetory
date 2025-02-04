@@ -22,6 +22,10 @@ exports.getUsers = async (req, res) => {
 
 exports.getUser = async (req, res) => {
     let id = req.params.id
+    const pattern = /^\d+$/;
+    if (!pattern.test(id)){
+        res.status(400).json({ message: "wrong id format" });
+    }
     try {
         const users = await User.findAll({
             where:{
@@ -39,6 +43,30 @@ exports.getUser = async (req, res) => {
 exports.createUser = async (req, res) => {
     console.log(req.body)
     const { email, password, name, familyName, postalAdress } = req.body;
+
+    const patternPostal = /^\d+$/;
+    const patternEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const patternName = /^[a-zA-ZÀ-ÿ-_ ]+$/;
+    const patternPassword = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{12,}$/;
+    if (!patternPostal.test(postalAdress)){
+        res.status(400).json({ message: "wrong postall adress format" });
+    }
+    if (!patternEmail.test(email)){
+        res.status(400).json({ message: "wrong email format" });
+    }
+    if (!patternName.test(name)){
+        res.status(400).json({ message: "wrong name format" });
+    }
+    if (!patternName.test(familyName)){
+        res.status(400).json({ message: "wrong family format" });
+    }
+    if (!patternPassword.test(password)){
+        res.status(400).json({ message: "wrong password format" });
+    }
+
+
+
+
     try {
         const hash = await argon2.hash(password);
         const user = await User.create({ 
@@ -81,6 +109,17 @@ exports.createUser = async (req, res) => {
 
 exports.connectUser = async (req, res) => {
     const { email, password } = req.body;
+
+    const patternEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const patternPassword = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{12,}$/;
+    if (!patternEmail.test(email)){
+        res.status(400).json({ message: "wrong email format" });
+    }
+
+    if (!patternPassword.test(password)){
+        res.status(400).json({ message: "wrong password format" });
+    }
+
     try {
         const user = await User.findAll({ where: { email: email }, });
         if (user){
@@ -129,6 +168,12 @@ exports.connectUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
     let id = req.params.id
+
+    const pattern = /^\d+$/;
+    if (!pattern.test(id)){
+        res.status(400).json({ message: "wrong id format" });
+    }
+
     console.log("id "+id)
     try {
         const todeleteinfo = await User.findAll({
@@ -225,6 +270,12 @@ const sendAdminMail = async ( title, message) => {
 
 exports.checkAdmin = async (req, res) => {
     let id = req.params.id
+
+    const pattern = /^\d+$/;
+    if (!pattern.test(id)){
+        res.status(400).json({ message: "wrong id format" });
+    }
+
     try {
         const users = await User.findAll({
             where:{
@@ -248,7 +299,26 @@ exports.checkAdmin = async (req, res) => {
 
 exports.modifUser = async (req, res) => {
     const { email, name, familyName, postalAdress, id } = req.body;
-    
+    const patternid = /^\d+$/;
+    const patternPostal = /^\d+$/;
+    const patternEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const patternName = /^[a-zA-ZÀ-ÿ-_ ]+$/;
+   
+    if (!patternPostal.test(postalAdress)){
+        res.status(400).json({ message: "wrong postall adress format" });
+    }
+    if (!patternEmail.test(email)){
+        res.status(400).json({ message: "wrong email format" });
+    }
+    if (!patternName.test(name)){
+        res.status(400).json({ message: "wrong name format" });
+    }
+    if (!patternName.test(familyName)){
+        res.status(400).json({ message: "wrong family format" });
+    }
+    if (!patternid.test(id)){
+        res.status(400).json({ message: "wrong id format" });
+    }
     try {
         const user = await User.findAll({ where: { email: email }, });
         if (user){

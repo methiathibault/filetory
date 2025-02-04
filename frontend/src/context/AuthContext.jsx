@@ -1,10 +1,10 @@
 import React, { useContext, useState, createContext, useEffect } from 'react';
 import { useNavigate } from "react-router-dom"
 export const userContext = createContext();
-
+import Cookies from 'js-cookie';
 
 export function UserProvider({children}){
-    const [token, setToken] =  useState(() => localStorage.getItem("token"));
+    const [token, setToken] =  useState(() => Cookies.get("token"));
 
     const [isConnected, setIsConnected] =  useState(false)
     const navigate = useNavigate();
@@ -13,7 +13,7 @@ export function UserProvider({children}){
         checkToken()
     },[]);
     const checkToken = () => {
-        const userToken = localStorage.getItem("token");
+        const userToken = Cookies.get("token");
         console.log("my user token "+ userToken)
         if(userToken){
             setToken(userToken);
@@ -23,7 +23,7 @@ export function UserProvider({children}){
 
 
     const tokenSetter = (new_token) =>{
-        localStorage.setItem("token", new_token);
+        Cookies.set("token", new_token,{secure: true, sameSite:"Strict", expires:7})
         setToken(new_token);
     }
 
@@ -36,7 +36,7 @@ export function UserProvider({children}){
     }
    
     const tokenDisconnect = () =>{
-        localStorage.removeItem("token");
+        Cookies.remove("token");
         setToken(null)
     }
     const data = {token, tokenSetter, tokenDisconnect, verifyToken, checkToken, isConnected};
