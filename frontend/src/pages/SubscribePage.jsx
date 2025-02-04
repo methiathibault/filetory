@@ -67,6 +67,7 @@ export default function SubscribePage() {
                 <div>
                     <div>password :</div>
                     <input onChange={e => setNewPassword(e.target.value)} type="password" className='rounded-md border-2 border-black px-2 hover:scale-105 focus:scale-110 duration-150'></input>
+                    <div className='w-40'>password must be at least 12 characters and contains one letter one number and one special character</div>
                 </div>
               </div>
               
