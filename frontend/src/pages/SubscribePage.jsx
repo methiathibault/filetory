@@ -32,6 +32,7 @@ export default function SubscribePage() {
       console.log(response);
       console.log("calling strip")
       go_strip_club()
+      go_subscribe()
     })
     .catch(function (error) {
       console.log(error);
@@ -56,16 +57,16 @@ export default function SubscribePage() {
           
               <div>
                   <div>adresse postale :</div>
-                  <input onChange={e => setPostalAdress(e.target.value)} className='rounded-md border-2 border-black px-2 hover:scale-105 focus:scale-110 duration-150'></input>
+                  <input onChange={e => setPostalAdress(e.target.value)} type="number" className='rounded-md border-2 border-black px-2 hover:scale-105 focus:scale-110 duration-150'></input>
               </div>
               <div className='flex gap-2 justify-between'>
                 <div>
                     <div>email :</div>
-                    <input onChange={e => setNewMail(e.target.value)} className='rounded-md border-2 border-black px-2 hover:scale-105 focus:scale-110 duration-150'></input>
+                    <input onChange={e => setNewMail(e.target.value)} type='email' className='rounded-md border-2 border-black px-2 hover:scale-105 focus:scale-110 duration-150'></input>
                 </div>
                 <div>
                     <div>password :</div>
-                    <input onChange={e => setNewPassword(e.target.value)} className='rounded-md border-2 border-black px-2 hover:scale-105 focus:scale-110 duration-150'></input>
+                    <input onChange={e => setNewPassword(e.target.value)} type="password" className='rounded-md border-2 border-black px-2 hover:scale-105 focus:scale-110 duration-150'></input>
                 </div>
               </div>
               

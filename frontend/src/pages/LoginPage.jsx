@@ -32,6 +32,7 @@ export default function LoginPage() {
 
             setModalMessage("well connected")
             setOkModal(true)
+            navigate("/")
         })
         .catch(function (error) {
             setModalMessage("error while connecting")
