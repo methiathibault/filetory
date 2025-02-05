@@ -31,14 +31,17 @@ export default function NavBar() {
     <div className='flex gap-2 justify-between rounded-full border-2 m-4 p-2 bg-zinc-100'>
         <div className='flex gap-2 mr-4 items-center '>
         <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150  '>  <Link to="/">Home</Link> </div>
-          <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '><Link to="/users">All users</Link></div>
+          
            
             
         </div>
         <div className='flex gap-2 mr-4 items-center'>
-          <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '> <Link to="/login">Login</Link></div>
-          <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '><Link to="/subscribe">Subscribe</Link></div>
-           
+        {verifyToken() ? "":
+          <>
+            <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '> <Link to="/login">Login</Link></div>
+            <div className='p-2 rounded-full hover:underline hover:bg-zinc-200 hover:font-bold duration-150 '><Link to="/subscribe">Subscribe</Link></div>
+          </>
+        }
             
             
             {verifyToken() ?

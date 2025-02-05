@@ -32,7 +32,7 @@ export default function SubscribePage() {
       console.log(response);
       console.log("calling strip")
       go_strip_club()
-      go_subscribe()
+      navigate("/")
     })
     .catch(function (error) {
       console.log(error);
