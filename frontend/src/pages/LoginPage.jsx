@@ -18,7 +18,7 @@ export default function LoginPage() {
     const { token, tokenSetter, tokenDisconnect, verifyToken, isConnected } = useUserContext();
 
     const go_subscribe =() => {
-        navigate("/subscribe")
+        navigate("/files")
     }
 
     const go_login = () => {
