@@ -58,21 +58,21 @@ const AdminPage = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">Tableau de bord administrateur</h1>
+      <h1 className="text-3xl font-bold mb-8 text-gray-800">Admin dashboard</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <StatCard 
-          title="Total des fichiers" 
+          title="Total files"
           value={stats.totalFiles}
           icon={FileText}
         />
         <StatCard 
-          title="Fichiers aujourd'hui" 
+          title="Files Today" 
           value={stats.todayFiles}
           icon={Upload}
         />
         <StatCard 
-          title="Nombre d'utilisateurs" 
+          title="Number of Users" 
           value={stats.filesPerUser.length}
           icon={Users}
         />
@@ -80,7 +80,7 @@ const AdminPage = () => {
 
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-xl font-semibold mb-6 text-gray-800">
-          Répartition des fichiers par utilisateur
+        Files distribution by user
         </h2>
         <div className="h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
@@ -90,7 +90,7 @@ const AdminPage = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="files" fill="#3B82F6" name="Nombre de fichiers" />
+              <Bar dataKey="files" fill="#3B82F6" name="Number of files" />
             </BarChart>
           </ResponsiveContainer>
         </div>

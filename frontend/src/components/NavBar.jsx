@@ -51,10 +51,10 @@ export default function NavBar() {
           </>
         ) : (
           <>
-            <NavButton to="/files">My Files</NavButton>
+            <NavButton to="/files">Files</NavButton>
             <NavButton to="/account">Account</NavButton>
-            <NavButton to="/buy">Buy More Space</NavButton>
-            {isAdmin && <NavButton to="/admin">Dashboard Admin</NavButton>}
+            <NavButton to="/buy">Buy more space</NavButton>
+            {isAdmin && <NavButton to="/admin">Admin dashboard</NavButton>}
             <NavButton to="/disconnect">Disconnect</NavButton>
           </>
         )}

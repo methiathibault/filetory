@@ -64,7 +64,7 @@ const StorageBar = ({ refreshTrigger }) => {
 
         {isExpanded && (
           <div className="mt-2 text-xs text-gray-500 transition-all duration-300">
-            {availableGB} GB disponibles
+            {availableGB} GB available
           </div>
         )}
       </div>

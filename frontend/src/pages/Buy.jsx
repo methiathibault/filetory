@@ -60,19 +60,19 @@ export default function Buy() {
 
   return (
     <div className='flex flex-col justify-center items-center my-8 bg-stone-100 rounded-lg p-8 m-4'>
-      <h1 className='font-bold text-5xl mb-8'>Achat d'espace de stockage</h1>
+      <h1 className='font-bold text-5xl mb-8'>Storage space purchase</h1>
 
       {storageInfo && (
         <div className="w-full max-w-md mb-8">
           <div className="bg-white rounded-lg p-6 shadow mb-8">
             <div className="flex items-center gap-3 mb-4">
               <HardDrive size={24} className="text-blue-600" />
-              <h2 className="text-xl font-semibold">Votre stockage actuel</h2>
+              <h2 className="text-xl font-semibold">Your current storage</h2>
             </div>
             <div className="space-y-2">
-              <p>Espace utilisé : {formatStorage(storageInfo.usedStorage)}</p>
-              <p>Espace total : {formatStorage(storageInfo.totalStorage)}</p>
-              <p>Espace disponible : {formatStorage(storageInfo.availableStorage)}</p>
+              <p>Used space : {formatStorage(storageInfo.usedStorage)}</p>
+              <p>Total space : {formatStorage(storageInfo.totalStorage)}</p>
+              <p>Available space : {formatStorage(storageInfo.availableStorage)}</p>
               
               <div className="w-full bg-gray-200 rounded-full h-2.5 mt-4">
                 <div
@@ -94,8 +94,8 @@ export default function Buy() {
       )}
 
       <div className='text-center space-y-4'>
-        <div className='font-bold text-xl'>20€ pour 20Go supplémentaires !</div>
-        <p className="text-gray-600">Augmentez votre espace de stockage de manière permanente</p>
+        <div className='font-bold text-xl'>20€ for 20GB additional storage !</div>
+        <p className="text-gray-600">Permanently increase your storage space</p>
         <button 
           onClick={newFacture} 
           disabled={isLoading}
@@ -105,7 +105,7 @@ export default function Buy() {
             transition-all duration-150
           `}
         >
-          {isLoading ? 'Traitement en cours...' : 'Acheter 20Go pour 20€'}
+          {isLoading ? 'Processing...' : 'Buy 20GB for 20€'}
         </button>
       </div>
     </div>

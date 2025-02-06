@@ -83,7 +83,7 @@ const FileList = ({ refreshTrigger, onUpdateFiles }) => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <input
             type="text"
-            placeholder="Rechercher un fichier..."
+            placeholder="Search for a file..."
             className="w-full pl-10 pr-4 py-2 border rounded-lg"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -94,25 +94,25 @@ const FileList = ({ refreshTrigger, onUpdateFiles }) => {
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
         >
-          <option value="date">Trier par date</option>
-          <option value="size">Trier par taille</option>
+          <option value="date">Sort by date</option>
+          <option value="size">Sort by size</option>
         </select>
         <select
           className="border rounded-lg px-4 py-2"
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
         >
-          <option value="">Tous les types</option>
+          <option value="">All</option>
           <option value="image">Images</option>
           <option value="document">Documents</option>
-          <option value="other">Autres</option>
+          <option value="other">Others</option>
         </select>
       </div>
 
       <div className="bg-white rounded-lg shadow">
         {filteredFiles.length === 0 ? (
           <div className="p-4 text-center text-gray-500">
-            Aucun fichier trouvé
+            No files found
           </div>
         ) : (
           filteredFiles.map((file) => (

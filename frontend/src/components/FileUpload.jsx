@@ -80,7 +80,7 @@ const FileUpload = ({ onUploadSuccess }) => {
         <div className="flex flex-col items-center">
           <Upload size={48} className="text-gray-500 mb-4" />
           <p className="text-gray-600 text-center">
-            Glissez-déposez vos fichiers ici<br />ou cliquez pour sélectionner
+            Drag and drop your files here<br />or click to select
           </p>
         </div>
       </form>
@@ -93,7 +93,7 @@ const FileUpload = ({ onUploadSuccess }) => {
               style={{ width: `${uploadProgress}%` }}
             ></div>
           </div>
-          <p className="text-center mt-2">{uploadProgress}% uploadé</p>
+          <p className="text-center mt-2">{uploadProgress}% uploaded</p>
         </div>
       )}
     </div>
