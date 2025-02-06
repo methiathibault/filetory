@@ -4,7 +4,7 @@ import { useUserContext } from '../context/AuthContext';
 import { jwtDecode } from "jwt-decode";
 import NotConnectedMessage from '../components/NotConnectedMessage';
 import { useNavigate } from 'react-router-dom';
-
+import { User, Mail, MapPin, FileText, Trash2, Save } from 'lucide-react';
 
 export default function Account() {
     const [usersList, setUsersList] = useState({});
@@ -23,7 +23,6 @@ export default function Account() {
             <NotConnectedMessage/>
            )
         }
-
 
         const decodedToken = jwtDecode(token);
         console.log(decodedToken)
@@ -48,8 +47,8 @@ export default function Account() {
                 setUsersList(response.data[0])
             })
     }
+
     const getMaFactures = () => {
-        
         const decodedToken = jwtDecode(token);
         console.log("get factrure "+token);
         axios.get("http://127.0.0.1:3001/factures/user/"+decodedToken.userId,
@@ -65,10 +64,7 @@ export default function Account() {
             })
     }
 
-   
-
     const generatePdf = async (id) => {
-
         axios.get("http://127.0.0.1:3001/factures/"+id,{
             headers:{
                 "authorization":token
@@ -114,10 +110,9 @@ export default function Account() {
                 alert('Erreur lors de la génération du PDF');
             }
         })
-        
     }
 
-   const deleteAccount = () => {
+    const deleteAccount = () => {
         const decodedToken = jwtDecode(token);
         console.log("delete acount "+decodedToken.userId)
         console.log("token "+token)
@@ -133,62 +128,146 @@ export default function Account() {
             navigate("/");
             console.log("delete acount "+decodedToken.userId)
         })
-   }
+    }
 
-   const changeUserInfo = (event) =>{
-
-    if (event.key === "Enter") {
-        console.log(usersList)
-
-        axios.put("http://127.0.0.1:3001/users/",
-            usersList,
-            {
-                headers:{
-                    "authorization":token
+    const changeUserInfo = (event) => {
+        if (event.key === "Enter") {
+            console.log(usersList)
+            axios.put("http://127.0.0.1:3001/users/",
+                usersList,
+                {
+                    headers:{
+                        "authorization":token
+                    }
                 }
-            }
-        )
+            )
             .then(function(response) {
-               
                 console.log("info "+response)
             })
         }
+    }
 
-   }
+    return (
+        <>
+        {verifyToken() ? 
+        <div className="max-w-4xl mx-auto p-6">
+            <div className="bg-white rounded-lg shadow-lg p-8">
+                <h1 className="text-3xl font-bold text-center mb-8 text-gray-800 flex items-center justify-center">
+                    <User className="w-8 h-8 mr-3" />
+                    Account Dashboard
+                </h1>
 
-  return (
-    <>
-    {verifyToken() ? 
-    <div className=' rounded-lg  m-4 p-8 bg-stone-100 hover:bg-stone-200 group/menu'>
-        <div className='flex justify-center items-center font-bold text-4xl group-hover/menu:underline '>Account</div>
-        <div className='flex flex-col items-center m-4'>
-            <h1 className='font-bold text-xl'>LISTE INFORMATIONS </h1>
-            
-                <div key={usersList.id} className='border-2 m-2 p-2 rounded-lg bg-zinc-100 hover:scale-105 hover:bg-zinc-300 duration-150 hover:px-8'>
-                     <div className='flex  gap-2 items-center justify-between'> <div>email : </div>  <input type="text" onChange={(e) => setUsersList({...usersList,email:e.target.value})} onKeyDown={changeUserInfo} defaultValue={usersList.email} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
-                     <div className='flex  gap-2 items-center justify-between'> <div>postal code :</div> <input type="text" onChange={(e) => setUsersList({...usersList,postalAdress:e.target.value})} onKeyDown={changeUserInfo} defaultValue={usersList.postalAdress} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
-                     <div className='flex  gap-2 items-center justify-between'><div>name :</div> <input type="text" onChange={(e) => setUsersList({...usersList,name:e.target.value})} onKeyDown={changeUserInfo} defaultValue={usersList.name} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
-                     <div className='flex  gap-2 items-center justify-between'><div>family name :</div> <input type="text" onChange={(e) => setUsersList({...usersList,familyName:e.target.value})} onKeyDown={changeUserInfo} defaultValue={usersList.familyName} className='border-2 p-1 rounded-lg border-black hover:px-2 focus:px-4 duration-150 ' /></div>
-                </div>
-            
-        </div>
-        <div className='flex flex-col items-center m-4'>
-            <h1 className='font-bold text-xl'>LISTE ACHAT </h1>
-            <div className='flex flex-col border-2 rounded-lg bg-zinc-300 hover:px-6 duration-300'>
-                {facureList.map(result =>
-                    <div className='border-2 m-2 p-2 rounded-lg bg-zinc-100 hover:scale-105 hover:bg-white duration-150 flex gap-2 items-center group'>
-                        <div className='group-hover:underline'>{  new Date(result.dateBill).toISOString().split("T")[0]}</div>
-                        <button onClick={() =>generatePdf(result.id)} className=' no-underline border-2 bg-blue-100 hover:bg-blue-200 p-2 hover:scale-105 duration-150 rounded-full'> voir facture</button>
+                {/* User Information Section */}
+                <div className="mb-8">
+                    <h2 className="text-xl font-semibold mb-4 text-gray-700 flex items-center">
+                        <User className="w-5 h-5 mr-2" />
+                        Personal Information
+                    </h2>
+                    <div className="bg-gray-50 p-6 rounded-lg shadow-sm space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-600">
+                                    <Mail className="w-4 h-4 mr-2" />
+                                    Email
+                                </label>
+                                <input
+                                    type="text"
+                                    onChange={(e) => setUsersList({...usersList, email: e.target.value})}
+                                    onKeyDown={changeUserInfo}
+                                    defaultValue={usersList.email}
+                                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-600">
+                                    <MapPin className="w-4 h-4 mr-2" />
+                                    Postal Code
+                                </label>
+                                <input
+                                    type="text"
+                                    onChange={(e) => setUsersList({...usersList, postalAdress: e.target.value})}
+                                    onKeyDown={changeUserInfo}
+                                    defaultValue={usersList.postalAdress}
+                                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-600">
+                                    <User className="w-4 h-4 mr-2" />
+                                    First Name
+                                </label>
+                                <input
+                                    type="text"
+                                    onChange={(e) => setUsersList({...usersList, name: e.target.value})}
+                                    onKeyDown={changeUserInfo}
+                                    defaultValue={usersList.name}
+                                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-600">
+                                    <User className="w-4 h-4 mr-2" />
+                                    Last Name
+                                </label>
+                                <input
+                                    type="text"
+                                    onChange={(e) => setUsersList({...usersList, familyName: e.target.value})}
+                                    onKeyDown={changeUserInfo}
+                                    defaultValue={usersList.familyName}
+                                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                />
+                            </div>
+                        </div>
+                        <p className="text-sm text-gray-500 mt-2">
+                            Press Enter to save changes for each field
+                        </p>
                     </div>
-                )}
+                </div>
+
+                {/* Invoices Section */}
+                <div className="mb-8">
+                    <h2 className="text-xl font-semibold mb-4 text-gray-700 flex items-center">
+                        <FileText className="w-5 h-5 mr-2" />
+                        Purchase History
+                    </h2>
+                    <div className="bg-gray-50 rounded-lg shadow-sm">
+                        {facureList.length > 0 ? (
+                            <div className="divide-y divide-gray-200">
+                                {facureList.map(result => (
+                                    <div key={result.id} 
+                                         className="flex items-center justify-between p-4 hover:bg-gray-100 transition-colors">
+                                        <span className="text-gray-700">
+                                            {new Date(result.dateBill).toLocaleDateString()}
+                                        </span>
+                                        <button
+                                            onClick={() => generatePdf(result.id)}
+                                            className="flex items-center px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
+                                        >
+                                            <FileText className="w-4 h-4 mr-2" />
+                                            View Invoice
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-center py-6 text-gray-500">No purchase history available</p>
+                        )}
+                    </div>
+                </div>
+
+                {/* Delete Account Section */}
+                <div className="border-t pt-6">
+                    <button
+                        onClick={deleteAccount}
+                        className="flex items-center justify-center w-full md:w-auto px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                    >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete Account
+                    </button>
+                </div>
             </div>
         </div>
-
-        <div className='flex flex-col items-center m-4'>
-            <button onClick={() => deleteAccount()} className='p-4 bg-red-500 rounded-full hover:bg-red-600 hover:scale-105 duration-150 hover:underline hover:font-bold'>SUPPRIMER MON COMPTE</button>
-        </div>
-    </div >
-     : <NotConnectedMessage/>}
-    </>
-  )
+        : <NotConnectedMessage/>}
+        </>
+    );
 }

@@ -47,7 +47,7 @@ export default function NavBar() {
         {!verifyToken() ? (
           <>
             <NavButton to="/login">Login</NavButton>
-            <NavButton to="/subscribe">Subscribe</NavButton>
+            <NavButton to="/subscribe">Register</NavButton>
           </>
         ) : (
           <>
