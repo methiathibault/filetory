@@ -8,10 +8,8 @@ const STORAGE_PER_PURCHASE = 21474836480;
 exports.getFactures = async (req, res) => {
     try {
         const users = await Facture.findAll();
-        console.log(users);
         res.status(200).json(users);
     } catch (error) {
-        console.log({ "error": error });
         res.status(500).json({ message: error.message });
     }
 }
@@ -24,10 +22,8 @@ exports.getFacture = async (req, res) => {
                 id:id
             }
         });
-        console.log(users);
         res.status(200).json(users);
     } catch (error) {
-        console.log({ "error": error });
         res.status(500).json({ message: error.message });
     }
 }
@@ -40,16 +36,13 @@ exports.getFactureByUserId = async (req, res) => {
                 factureUserId:id
             }
         });
-        console.log(users);
         res.status(200).json(users);
     } catch (error) {
-        console.log({ "error": error });
         res.status(500).json({ message: error.message });
     }
 }
 
 exports.newFacture = async (req, res) => {
-    console.log(req.body)
     const { userId, userEmail } = req.body;
     try {
         const facture = await Facture.create({ 
@@ -77,7 +70,6 @@ exports.newFacture = async (req, res) => {
 
         res.status(201).json(facture);
     } catch (error) {
-        console.log({ "error": error });
         res.status(500).json({ message: error.message });
     }
 }
@@ -88,7 +80,6 @@ exports.deleteFacture = async (req, res) => {
         const user = await Facture.destroy({ where:{id : id} });
         res.status(201).json(user);
     } catch (error) {
-        console.log({ "error": error });
         res.status(500).json({ message: error.message });
     }
 }

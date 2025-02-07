@@ -3,18 +3,9 @@ import React,{useEffect, useState} from 'react'
 export default function NotOkModal({isVisible, onClose, message}) {
 
 
-    if(!isVisible) return null
-
-   
-
-
+    if(!isVisible) return null;
     useEffect(() => {
-      console.log("salut")
-
-
         const timer = setTimeout(() => {
-          
-          console.log('Action exécutée après 2 secondes');
           onClose()
         }, 2000);
         return () => clearTimeout(timer);

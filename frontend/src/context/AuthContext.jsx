@@ -14,7 +14,6 @@ export function UserProvider({children}){
     },[]);
     const checkToken = () => {
         const userToken = Cookies.get("token");
-        console.log("my user token "+ userToken)
         if(userToken){
             setToken(userToken);
         }
@@ -31,7 +30,6 @@ export function UserProvider({children}){
         if(!token){
             return false
         }
-        console.log(! !token)
         return ! !token
     }
    

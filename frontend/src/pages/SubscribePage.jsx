@@ -28,8 +28,6 @@ export default function SubscribePage() {
       postalAdress: postalAdress
     })
     .then(function (response) {
-      console.log(response);
-      console.log("calling strip")
       go_strip_club()
       navigate("/")
     })

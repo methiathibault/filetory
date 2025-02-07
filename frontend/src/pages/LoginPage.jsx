@@ -20,7 +20,6 @@ export default function LoginPage() {
     }
 
     const go_login = () => {
-        console.log("go login")
         axios.post('http://127.0.0.1:3001/users/connection', {
             email: newMail,
             password: newPassword

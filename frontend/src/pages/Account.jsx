@@ -23,10 +23,6 @@ export default function Account() {
             <NotConnectedMessage/>
            )
         }
-
-        const decodedToken = jwtDecode(token);
-        console.log(decodedToken)
-        
         getUser()
         getMaFactures()
         
@@ -34,7 +30,6 @@ export default function Account() {
 
     const getUser = () => {
         const decodedToken = jwtDecode(token);
-        console.log("get users", token);
         axios.get("http://127.0.0.1:3001/users/"+decodedToken.userId,
         {
             headers:{
@@ -43,14 +38,12 @@ export default function Account() {
         })
         .then(function(response)
             {
-                console.log(response.data)
                 setUsersList(response.data[0])
             })
     }
 
     const getMaFactures = () => {
         const decodedToken = jwtDecode(token);
-        console.log("get factrure "+token);
         axios.get("http://127.0.0.1:3001/factures/user/"+decodedToken.userId,
         {
             headers:{
@@ -59,7 +52,6 @@ export default function Account() {
         })
         .then(function(response)
             {
-                console.log(response.data)
                 setFactureList(response.data)
             })
     }
@@ -71,8 +63,6 @@ export default function Account() {
             }
         })
         .then(function(response){
-            console.log("response")
-            console.log(response.data[0])
             const info = response.data[0]
             try {
                 const documentDefinition = {
@@ -114,8 +104,6 @@ export default function Account() {
 
     const deleteAccount = () => {
         const decodedToken = jwtDecode(token);
-        console.log("delete acount "+decodedToken.userId)
-        console.log("token "+token)
 
         axios.delete("http://127.0.0.1:3001/users/"+decodedToken.userId,
         {
@@ -126,13 +114,11 @@ export default function Account() {
         .then(function(response) {
             tokenDisconnect();
             navigate("/");
-            console.log("delete acount "+decodedToken.userId)
         })
     }
 
     const changeUserInfo = (event) => {
         if (event.key === "Enter") {
-            console.log(usersList)
             axios.put("http://127.0.0.1:3001/users/",
                 usersList,
                 {

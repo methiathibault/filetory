@@ -4,10 +4,7 @@ export default function OkModal({isVisible, onClose, message}) {
   
     if(!isVisible) return null
     useEffect(() => {
-      console.log("salut")
         const timer = setTimeout(() => {
-          
-          console.log('Action exécutée après 2 secondes');
           onClose()
         }, 2000);
         return () => clearTimeout(timer);

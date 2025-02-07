@@ -5,7 +5,6 @@ import Menu from '../pages/Menu'
 import LoginPage from '../pages/LoginPage'
 import SubscribePage from '../pages/SubscribePage'
 import FilesPage from '../pages/FilesPage'
-import UsersPageTest from '../pages/UsersPageTest'
 import Disconnect from './Disconnect'
 import Account from '../pages/Account'
 import Buy from '../pages/Buy'
@@ -18,7 +17,6 @@ export default function Routing() {
         <Route path="/login" element={<LoginPage/>}></Route>
         <Route path="/subscribe" element={<SubscribePage/>}></Route>
         <Route path="/files" element={<FilesPage/>}></Route>
-        <Route path="/users" element={<UsersPageTest/>}></Route>
         <Route path="/disconnect" element={<Disconnect/>}></Route>
         <Route path="/buy" element={<Buy/>}></Route>
         <Route path="/account" element={<Account/>}></Route>

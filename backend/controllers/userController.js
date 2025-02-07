@@ -12,10 +12,8 @@ require('dotenv').config({path: path.resolve(__dirname, '../.env')});
 exports.getUsers = async (req, res) => {
     try {
         const users = await User.findAll();
-        console.log(users);
         res.status(200).json(users);
     } catch (error) {
-        console.log({ "error": error });
         res.status(500).json({ message: error.message });
     }
 }
@@ -32,16 +30,13 @@ exports.getUser = async (req, res) => {
                 id:id
             }
         });
-        console.log(users);
         res.status(200).json(users);
     } catch (error) {
-        console.log({ "error": error });
         res.status(500).json({ message: error.message });
     }
 }
 
 exports.createUser = async (req, res) => {
-    console.log(req.body)
     const { email, password, name, familyName, postalAdress } = req.body;
 
     const patternPostal = /^\d+$/;
@@ -78,7 +73,6 @@ exports.createUser = async (req, res) => {
             usedStorage: 0,
             totalStorage: INITIAL_STORAGE
         });
-        console.log(user)
         const _ = await Facture.create({ 
             "factureUserId": user.dataValues.id, 
             "email": user.dataValues.email,
@@ -89,7 +83,6 @@ exports.createUser = async (req, res) => {
             "totalPrice": 20.0  
         });
         try {
-            console.log("Email de l'utilisateur:", user.dataValues.email);
             await sendMail(
                 user.dataValues.email,
                 "Bienvenue chez Filetory !",
@@ -102,7 +95,6 @@ exports.createUser = async (req, res) => {
         res.status(201).json(user);
 
     } catch (error) {
-        console.log({ "error": error });
         res.status(500).json({ message: error.message });
     }
 }
@@ -124,44 +116,31 @@ exports.connectUser = async (req, res) => {
         const user = await User.findAll({ where: { email: email }, });
         if (user){
             try {
-                console.log(user[0].password + " "+ password)
                 if (await argon2.verify(user[0].password, password)) {
-                    // password match
-                    console.log("dans if")
                     const token = process.env.JWT_TOKEN
-                    console.log("token " + token)
                     const tokenToken = crypto.randomUUID()
-                    console.log("tokenToken" + tokenToken)
                     await User.update({connectionToken:tokenToken},{where:{email:email}})
                     const payload = {
                         userId: user[0].dataValues.id,
                         mail: user[0].dataValues.email,
                         token: tokenToken
                     };
-                    console.log(payload)
                     const options = {
-                        expiresIn: '1h' // Le token expirera dans 1 heure
+                        expiresIn: '1h'
                     };
                     const myjwt = jwt.sign(payload, token, options);
                     res.status(201).json(myjwt);
                 } else {
-                  // password did not match
                   res.status(400).json({"error": "bad password" });
                 }
               } catch (err) {
-                // internal failure
                 res.status(500).json({"error": "cant connect" });
               }
-            
-
-
-
         }else{
             res.status(500).json({"error": "cant connect" });
         }
         
     } catch (error) {
-        console.log({ "error": error });
         res.status(500).json({ message: error.message });
     }
 }
@@ -174,7 +153,6 @@ exports.deleteUser = async (req, res) => {
         res.status(400).json({ message: "wrong id format" });
     }
 
-    console.log("id "+id)
     try {
         const todeleteinfo = await User.findAll({
             where:{
@@ -183,13 +161,10 @@ exports.deleteUser = async (req, res) => {
         });
         const user = await User.destroy({ where:{id : id} });
 
-        console.log("send notif mail to user ")
         sendMail(todeleteinfo[0].dataValues.email," filetory vous dit aurevoir!","<b>filetory vous dit aurevoir! </b> votre compte a bien été supprimer tout a bien été supprimé")
-        console.log("send notif mail to admin")
         sendAdminMail(todeleteinfo[0].dataValues.email+" unsubscribe", todeleteinfo[0].dataValues.email+" has unsubscribe")
         res.status(201).json(user);
     } catch (error) {
-        console.log({ "error": error });
         res.status(500).json({ message: error.message });
     }
     
@@ -240,7 +215,7 @@ const sendAdminMail = async ( title, message) => {
                 const transporter = nodemailer.createTransport({
                     host: 'smtp.office365.com',
                     port: 587,
-                    secure: false, // Utilise TLS
+                    secure: false,
                     auth: {
                       user: process.env.MAIL_USERNAME, // Remplacez par votre email Outlook
                       pass: process.env.MAIL_PASSWORD // Remplacez par votre mot de passe ou un mot de passe d'application
@@ -253,9 +228,9 @@ const sendAdminMail = async ( title, message) => {
                 let info = await transporter.sendMail({
                   from: '"Me" '+process.env.MAIL_USERNAME,
                   to: user.email,
-                  subject: message,//"bienvenue chez filetory!",
-                  text: title,//"votre compte a bien été creer",
-                  html: title//"<b>bienvenue chez filetory! </b> votre compte a bien été creer tu désormais utiliser beaucoup d'espace"
+                  subject: message,
+                  text: title,
+                  html: title
                 });
             }catch(error){
                 console.log("error while sending mail")
@@ -283,7 +258,6 @@ exports.checkAdmin = async (req, res) => {
             }
         });
 
-        console.log(users[0].dataValues.roles)
         if(users[0].dataValues.roles == "admin"){
             res.status(200).json({"admin":true});
         }else{
@@ -292,7 +266,6 @@ exports.checkAdmin = async (req, res) => {
         
        
     } catch (error) {
-        console.log({ "error": error });
         res.status(500).json({ message: error.message });
     }
 }
@@ -327,7 +300,6 @@ exports.modifUser = async (req, res) => {
                 await User.update({email:email,familyName:familyName,name:name,postalAdress:postalAdress},{where:{id:id}})
                    
               } catch (err) {
-                // internal failure
                 res.status(500).json({"error": "cant connect" });
               }
         }else{
@@ -335,7 +307,6 @@ exports.modifUser = async (req, res) => {
         }
         
     } catch (error) {
-        console.log({ "error": error });
         res.status(500).json({ message: error.message });
     }
 }
